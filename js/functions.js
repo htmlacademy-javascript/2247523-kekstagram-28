@@ -53,11 +53,13 @@ function createString(string, minLength, addSymbol) {
   const lengthAdd = minLength - string.length;
   let addString = '';
   while (addString.length < lengthAdd) {
-    addString += addSymbol;
+    const lengthRest = lengthAdd - addString.length;
+    addString = addSymbol.slice(0, lengthRest) + addString;
   }
-  const newString = addString.slice(0, lengthAdd) + string;
+  const newString = addString + string;
   return newString;
 }
+
 createString('1', 2, '0');
 createString('1', 4, '0');
 createString('q', 4, 'werty');
