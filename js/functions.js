@@ -7,13 +7,13 @@ checkStringLength('проверяемая строка', 10);
 
 
 function checkStringPalindrome(string) {
-  const stringNoGap = string.replaceAll(' ', '');
+  const stringNoGap = string.replaceAll(' ', '').toLowerCase();
   const stringLength = stringNoGap.length;
   let newString = '';
   for (let i = stringLength - 1; i >= 0; i--) {
     newString += stringNoGap[i];
   }
-  return newString.toLowerCase() === stringNoGap.toLowerCase();
+  return newString === stringNoGap;
 }
 checkStringPalindrome('Лёша на полке клопа нашёл');
 checkStringPalindrome('топот');
