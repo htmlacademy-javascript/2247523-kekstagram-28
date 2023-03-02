@@ -1,4 +1,3 @@
-
 const DESCRIPTIONS = [
   'Представляю вашему вниманию фото сестры Кекса - мисс Флекс.',
   'Посмотрите на эти виды!',
@@ -23,13 +22,7 @@ const MESSAGES = [
 const NAMES = [
   'Вася', 'Маша', 'Даша', 'Глаша', 'Саша', 'Мася', 'Дуся', 'Муся',
 ];
-const RANDOMOBJECT = 25;
-
-function getRandomIntInclusive(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+const RANDOM_OBJECT = 25;
 
 const getRandomInt = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -39,33 +32,22 @@ const getRandomInt = (a, b) => {
 };
 const getRandomArrayElement = (elements) => elements[getRandomInt(0, elements.length - 1)];
 
-function createIdGenerator() {
-  let lastGeneratedId = 0;
-  return function () {
-    lastGeneratedId += 1;
-    return lastGeneratedId;
-  };
-}
-const generatePhotoId = createIdGenerator();
-const generateUrlId = createIdGenerator();
-const generateCommentId = createIdGenerator();
-
-const createComments = () => ({
+const createComments = (_, index) => ({
   name: getRandomArrayElement(NAMES),
-  id: generateCommentId(),
-  avatar: `img/avatar-${getRandomIntInclusive(1, 6)}.svg`,
+  id: index + 1,
+  avatar: `img/avatar-${getRandomInt(1, 6)}.svg`,
   message: getRandomArrayElement(MESSAGES),
 });
 
-const similarComments = () => Array.from({ length: getRandomIntInclusive(1, 3) }, createComments);
+const similarComments = () => Array.from({ length: getRandomInt(1, 3) }, createComments);
 
-const createPhotoPost = () => ({
+const createPhotoPost = (_, index) => ({
   name: getRandomArrayElement(NAMES),
-  id: generatePhotoId(),
-  url: `photos/${generateUrlId()}.jpg`,
+  id: index + 1,
+  url: `photos/${index + 1}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
-  likes: getRandomIntInclusive(15, 200),
+  likes: getRandomInt(15, 200),
   comments: similarComments(),
 });
-const similarPost = () => Array.from({ length: RANDOMOBJECT }, createPhotoPost);
+const similarPost = () => Array.from({ length: RANDOM_OBJECT }, createPhotoPost);
 similarPost();
