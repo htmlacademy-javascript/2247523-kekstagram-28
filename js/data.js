@@ -37,7 +37,7 @@ const createComments = (_, index) => ({
   message: getRandomArrayElement(MESSAGES),
 });
 
-export const similarComments = () => Array.from({ length: getRandomInt(1, 3) }, createComments);
+export const generateComments = () => Array.from({ length: getRandomInt(1, 3) }, createComments);
 
 
 const createPhotoPost = (_, index) => ({
@@ -46,7 +46,7 @@ const createPhotoPost = (_, index) => ({
   url: `photos/${index + 1}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomInt(15, 200),
-  comments: similarComments(),
+  comments: generateComments(),
 });
 
-export const similarPost = () => Array.from({ length: RANDOM_OBJECT }, createPhotoPost);
+export const generatePosts = () => Array.from({ length: RANDOM_OBJECT }, createPhotoPost);
