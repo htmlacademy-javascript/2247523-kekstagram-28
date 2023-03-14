@@ -1,3 +1,3 @@
-import { similarPost } from './data.js';
-import {createPhotoList} from './create-photo-list.js';
-createPhotoList(similarPost());
+import { generatePosts } from './data.js';
+import {renderPhotoList} from './render-photo-list.js';
+renderPhotoList(generatePosts());
