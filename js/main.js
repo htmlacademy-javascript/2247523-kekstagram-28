@@ -1,2 +1,2 @@
-import { similarPost } from './data/post.js';
+import { similarPost } from './data.js';
 similarPost();
