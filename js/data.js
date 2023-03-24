@@ -50,3 +50,4 @@ const createPhotoPost = (_, index) => ({
 });
 
 export const generatePosts = () => Array.from({ length: RANDOM_OBJECT }, createPhotoPost);
+export const posts = generatePosts();

@@ -1,5 +1,6 @@
-import { generatePosts } from './data.js';
+import { posts } from './data.js';
 import { renderPhotoList } from './render-photo-list.js';
-import './modal.js';
-renderPhotoList(generatePosts());
+import './pop-up-post.js';
+renderPhotoList(posts);
+
 
