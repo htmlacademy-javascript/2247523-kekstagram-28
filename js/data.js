@@ -37,7 +37,7 @@ const createComments = (_, index) => ({
   message: getRandomArrayElement(MESSAGES),
 });
 
-export const generateComments = () => Array.from({ length: getRandomInt(1, 3) }, createComments);
+export const generateComments = () => Array.from({ length: getRandomInt(6, 20) }, createComments);
 
 
 const createPhotoPost = (_, index) => ({
