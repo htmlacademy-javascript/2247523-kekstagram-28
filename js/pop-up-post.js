@@ -1,5 +1,5 @@
 import { posts } from './data.js';
-import { renderPhotoWindow } from './render-photo-window.js';
+import { renderPhotoWindow, COMMENTS_TO_SHOW } from './render-photo-window.js';
 
 
 const bigPicture = document.querySelector('.big-picture');
@@ -21,13 +21,12 @@ const openPopup = (evt) => {
   body.classList.add('modal-open');
 };
 
-document.querySelector('.pictures').addEventListener('click', openPopup);
-
 const closePopup = () => {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
 };
 
+document.querySelector('.pictures').addEventListener('click', openPopup);
 
 document.addEventListener('keydown', (evt) => {
   if (evt.key === 'Escape') {
@@ -37,3 +36,20 @@ document.addEventListener('keydown', (evt) => {
 });
 
 document.querySelector('.big-picture__cancel').addEventListener('click', closePopup);
+
+document.querySelector('.comments-loader').addEventListener('click', () => {
+  const socialComments = document.querySelector('.social__comments');
+  const hiddenCommentsEl = socialComments.querySelectorAll('.hidden');
+  const hiddenCommentsArr = Array.from(hiddenCommentsEl);
+  let commentToShow = socialComments.children.length - hiddenCommentsEl.length;
+  hiddenCommentsArr.forEach((element, index) => {
+    if (index + 1 <= COMMENTS_TO_SHOW) {
+      element.classList.remove('hidden');
+      commentToShow += 1;
+    }
+  });
+
+  document.querySelector('.social__comment-count').innerHTML = `${commentToShow} из <span class="comments-count">${socialComments.children.length}<span> комментариев`;
+
+});
+

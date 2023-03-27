@@ -1,7 +1,13 @@
-const createComment = (comment) => {
+export const COMMENTS_TO_SHOW = 5;
+
+const createComment = (comment, commentIndex) => {
 
   const commentElement = document.createElement('li');
   commentElement.classList.add('social__comment');
+
+  if (commentIndex + 1 > COMMENTS_TO_SHOW) {
+    commentElement.classList.add('hidden');
+  }
 
   const imgElement = document.createElement('img');
   imgElement.classList.add('social__picture');
@@ -25,11 +31,9 @@ export const renderPhotoWindow = (photo) => {
   const bigPicture = document.querySelector('.big-picture');
 
   bigPicture.querySelector('.big-picture__img img').src = photo.url;
-  bigPicture.querySelector('.comments-count').textContent = photo.comments.length;
+  bigPicture.querySelector('.social__comment-count').innerHTML = `${COMMENTS_TO_SHOW} из <span class="comments-count">${photo.comments.length}<span> комментариев`;
   bigPicture.querySelector('.likes-count').textContent = photo.likes;
   bigPicture.querySelector('.social__caption').textContent = photo.description;
-  bigPicture.querySelector('.social__comment-count').classList.add('hidden');
-  bigPicture.querySelector('.comments-loader').classList.add('hidden');//строки 18-19 потом удалить,с ними мы разберёмся позже, в другом домашнем задании.
 
   const comments = bigPicture.querySelector('.social__comments');
 
@@ -37,7 +41,7 @@ export const renderPhotoWindow = (photo) => {
     comments.removeChild(comments.firstChild);
   }
 
-  photo.comments.forEach((element) => {
-    comments.appendChild(createComment(element));
+  photo.comments.forEach((element, index) => {
+    comments.appendChild(createComment(element, index));
   });
 };
