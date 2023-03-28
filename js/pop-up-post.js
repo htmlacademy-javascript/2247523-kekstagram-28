@@ -6,12 +6,15 @@ const bigPicture = document.querySelector('.big-picture');
 const body = document.querySelector('body');
 
 const openPopup = (evt) => {
-  const pictureElements = document.querySelectorAll('.picture');
+  const thumbnail = evt.target.closest('.picture');
+  if(!thumbnail){
+    return;
+  }
 
+  const pictureElements = document.querySelectorAll('.picture');
   evt.preventDefault();
-  const parentElement = evt.target.parentElement;
   const pictures = Array.from(pictureElements);
-  const index = pictures.indexOf(parentElement);
+  const index = pictures.indexOf(thumbnail);
 
   if (index >= 0) {
     renderPhotoWindow(posts[index]);
