@@ -1,12 +1,15 @@
+import { changeScalePhoto } from './scale-photo.js';
+import { changeEffects } from './slider.js';
 const TAG_ERROR_TEXT = 'Неправильно заполнены хештеги';
 const VALID_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 const MAX_HASHTAG_COUNT = 5;
 const body = document.querySelector('body');
 const imdUpload = body.querySelector('.img-upload__overlay');
-const hashtagField = document.querySelector('.text__hashtags');
-const commentField = document.querySelector('.text__description');
-const form = document.querySelector('.img-upload form');
-
+const hashtagField = body.querySelector('.text__hashtags');
+const commentField = body.querySelector('.text__description');
+const form = body.querySelector('.img-upload form');
+const cancelButton = body.querySelector('#upload-cancel');
+const submitButton = body.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -21,8 +24,8 @@ const isTextFieldFocused = () =>
 const closeDownloadPopup = () => {
   form.reset();
   pristine.reset();
-  // resetScale();
-  // resetEffects();
+  changeScalePhoto();
+  changeEffects();
   imdUpload.classList.add('hidden');
   body.classList.remove('modal-open');
 };
@@ -34,7 +37,7 @@ const closeByEsc = (evt) => {
     document.removeEventListener('keydown', closeByEsc);
   }
 };
-document.querySelector('#upload-cancel').addEventListener('click', closeDownloadPopup);
+cancelButton.addEventListener('click', closeDownloadPopup);
 
 const openDownloadPopup = () => {
   imdUpload.classList.remove('hidden');
@@ -65,3 +68,17 @@ pristine.addValidator(
   validateTags,
   TAG_ERROR_TEXT
 );
+
+const onFormSubmit = (evt) => {
+  evt.preventDefault();
+};
+
+form.addEventListener('submit', onFormSubmit);
+
+hashtagField.addEventListener('input', () => {
+  if (pristine.validate()){
+    submitButton.removeAttribute('disabled');
+  } else {
+    submitButton.setAttribute('disabled','disabled');
+  }
+});
