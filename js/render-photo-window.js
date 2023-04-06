@@ -31,7 +31,7 @@ export const renderPhotoWindow = (photo) => {
   const bigPicture = document.querySelector('.big-picture');
 
   bigPicture.querySelector('.big-picture__img img').src = photo.url;
-  bigPicture.querySelector('.social__comment-count').innerHTML = `${COMMENTS_TO_SHOW} из <span class="comments-count">${photo.comments.length}<span> комментариев`;
+  bigPicture.querySelector('.social__comment-count').innerHTML = `${Math.min(COMMENTS_TO_SHOW,photo.comments.length)} из <span class="comments-count">${photo.comments.length}<span> комментариев`;
   bigPicture.querySelector('.likes-count').textContent = photo.likes;
   bigPicture.querySelector('.social__caption').textContent = photo.description;
 

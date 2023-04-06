@@ -1,15 +1,18 @@
 import { changeScalePhoto } from './scale-photo.js';
 import { changeEffects } from './slider.js';
+import { sendData } from './fetch.js';
+import {showError,showSuccess} from './message.js';
 const TAG_ERROR_TEXT = 'Неправильно заполнены хештеги';
 const VALID_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 const MAX_HASHTAG_COUNT = 5;
 const body = document.querySelector('body');
-const imdUpload = body.querySelector('.img-upload__overlay');
+const imgUpload = body.querySelector('.img-upload__overlay');
 const hashtagField = body.querySelector('.text__hashtags');
 const commentField = body.querySelector('.text__description');
 const form = body.querySelector('.img-upload form');
 const cancelButton = body.querySelector('#upload-cancel');
 const submitButton = body.querySelector('.img-upload__submit');
+const imgUploadPreview = body.querySelector('.img-upload__preview img');
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -26,7 +29,7 @@ const closeDownloadPopup = () => {
   pristine.reset();
   changeScalePhoto();
   changeEffects();
-  imdUpload.classList.add('hidden');
+  imgUpload.classList.add('hidden');
   body.classList.remove('modal-open');
 };
 
@@ -39,10 +42,16 @@ const closeByEsc = (evt) => {
 };
 cancelButton.addEventListener('click', closeDownloadPopup);
 
-const openDownloadPopup = () => {
-  imdUpload.classList.remove('hidden');
+const openDownloadPopup = (evt) => {
+  imgUpload.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', closeByEsc);
+
+  const reader = new FileReader();
+  reader.readAsDataURL(evt.target.files[0]);
+  reader.addEventListener('load', () => {
+    imgUploadPreview.src = reader.result;
+  });
 };
 document.querySelector('#upload-file').addEventListener('change', openDownloadPopup);
 
@@ -71,14 +80,22 @@ pristine.addValidator(
 
 const onFormSubmit = (evt) => {
   evt.preventDefault();
+  sendData(new FormData(form))
+    .then(() => {
+      closeDownloadPopup();
+      showSuccess();
+    })
+    .catch(() => {
+      showError();
+    });
 };
 
 form.addEventListener('submit', onFormSubmit);
 
 hashtagField.addEventListener('input', () => {
-  if (pristine.validate()){
+  if (pristine.validate()) {
     submitButton.removeAttribute('disabled');
   } else {
-    submitButton.setAttribute('disabled','disabled');
+    submitButton.setAttribute('disabled', 'disabled');
   }
 });

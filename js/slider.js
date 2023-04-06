@@ -95,7 +95,7 @@ const onChangeEffect = (evt) => {
 const onSliderUpdate = () => {
   const sliderValue = effectLevelSlider.noUiSlider.get();
   if (isDefault()) {
-    imageUploadPreview.style.filter = DEFAULT_EFFECT.style
+    imageUploadPreview.style.filter = DEFAULT_EFFECT.style;
   } else {
     imageUploadPreview.style.filter = `${chosenEffect.style}(${sliderValue}${chosenEffect.unit})`;
   }
