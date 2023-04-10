@@ -1050,7 +1050,7 @@
               if (options.tooltips[handleNumber] !== true) {
                   formattedValue = options.tooltips[handleNumber].to(unencoded[handleNumber]);
               }
-              scope_Tooltips[handleNumber].innerHTML = formattedValue;
+              scope_Tooltips[handleNumber].textContent = formattedValue;
           });
       }
       function aria() {

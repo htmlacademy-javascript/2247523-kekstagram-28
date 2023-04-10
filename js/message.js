@@ -1,6 +1,5 @@
 const body = document.querySelector('body');
 const templateSuccess = document.querySelector('#success').content;
-const newSuccess = templateSuccess.cloneNode(true);
 const templateError = document.querySelector('#error').content;
 
 const closeSuccessByEsc = (evt) => {
@@ -13,6 +12,7 @@ const closeSuccessByEsc = (evt) => {
 
 
 const showSuccess = () => {
+  const newSuccess = templateSuccess.cloneNode(true);
   body.appendChild(newSuccess);
   document.addEventListener('keydown', closeSuccessByEsc);
 

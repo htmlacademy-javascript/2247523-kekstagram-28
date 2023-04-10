@@ -49,7 +49,10 @@ const closeByEsc = (evt) => {
     document.removeEventListener('keydown', closeByEsc);
   }
 };
-cancelButton.addEventListener('click', closeDownloadPopup);
+cancelButton.addEventListener('click', () => {
+  closeDownloadPopup();
+  document.removeEventListener('keydown', closeByEsc);
+});
 
 const openDownloadPopup = (evt) => {
   const file = evt.target.files[0];
@@ -106,12 +109,13 @@ const onFormSubmit = (evt) => {
   sendData(new FormData(form))
     .then(() => {
       closeDownloadPopup();
+      document.removeEventListener('keydown', closeByEsc);
       showSuccess();
     })
     .catch(() => {
       showError();
     })
-    .finally(()=>{
+    .finally(() => {
       submitButton.removeAttribute('disabled');
     });
 };
