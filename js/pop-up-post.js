@@ -51,8 +51,6 @@ document.querySelector('.comments-loader').addEventListener('click', () => {
       commentToShow += 1;
     }
   });
-
   document.querySelector('.social__comment-count').innerHTML = `${commentToShow} из <span class="comments-count">${socialComments.children.length}<span> комментариев`;
-
 });
 

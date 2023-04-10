@@ -1,10 +1,12 @@
 import { changeScalePhoto } from './scale-photo.js';
 import { changeEffects } from './slider.js';
 import { sendData } from './fetch.js';
-import {showError,showSuccess} from './message.js';
+import { showError, showSuccess } from './message.js';
+import { showAlert } from './util.js';
 const TAG_ERROR_TEXT = 'Неправильно заполнены хештеги';
 const VALID_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 const MAX_HASHTAG_COUNT = 5;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const body = document.querySelector('body');
 const imgUpload = body.querySelector('.img-upload__overlay');
 const hashtagField = body.querySelector('.text__hashtags');
@@ -43,15 +45,28 @@ const closeByEsc = (evt) => {
 cancelButton.addEventListener('click', closeDownloadPopup);
 
 const openDownloadPopup = (evt) => {
+  const file = evt.target.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (!matches) {
+    showAlert('Неправильный тип файла!');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.addEventListener('load', () => {
+    imgUploadPreview.src = reader.result;
+    const previewElements = document.querySelectorAll('.effects__preview');
+    const effectsPreview = Array.from(previewElements);
+    effectsPreview.forEach((element) => {
+      element.style.backgroundImage = `url(${reader.result})`;
+    });
+  });
   imgUpload.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', closeByEsc);
-
-  const reader = new FileReader();
-  reader.readAsDataURL(evt.target.files[0]);
-  reader.addEventListener('load', () => {
-    imgUploadPreview.src = reader.result;
-  });
 };
 document.querySelector('#upload-file').addEventListener('change', openDownloadPopup);
 

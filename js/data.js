@@ -6,6 +6,7 @@ let posts = [];
 getData().then((response) => {
   renderPhotoList(response);
   posts = response;
+  document.querySelector('.img-filters--inactive').classList.remove('img-filters--inactive');
 });
 
 export { posts };
