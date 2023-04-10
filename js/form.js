@@ -33,16 +33,26 @@ const closeDownloadPopup = () => {
   changeEffects();
   imgUpload.classList.add('hidden');
   body.classList.remove('modal-open');
+  imgUploadPreview.src = 'img/upload-default-image.jpg';
+  const previewElements = document.querySelectorAll('.effects__preview');
+  const effectsPreview = Array.from(previewElements);
+  effectsPreview.forEach((element) => {
+    element.removeAttribute('style');
+  });
 };
 
 const closeByEsc = (evt) => {
-  if (evt.key === 'Escape' && !isTextFieldFocused()) {
+  const errorPopup = document.querySelector('.error');
+  if (evt.key === 'Escape' && !isTextFieldFocused() && !errorPopup) {
     evt.preventDefault();
     closeDownloadPopup();
     document.removeEventListener('keydown', closeByEsc);
   }
 };
-cancelButton.addEventListener('click', closeDownloadPopup);
+cancelButton.addEventListener('click', () => {
+  closeDownloadPopup();
+  document.removeEventListener('keydown', closeByEsc);
+});
 
 const openDownloadPopup = (evt) => {
   const file = evt.target.files[0];
@@ -95,19 +105,32 @@ pristine.addValidator(
 
 const onFormSubmit = (evt) => {
   evt.preventDefault();
+  submitButton.setAttribute('disabled', 'disabled');
   sendData(new FormData(form))
     .then(() => {
       closeDownloadPopup();
+      document.removeEventListener('keydown', closeByEsc);
       showSuccess();
     })
     .catch(() => {
       showError();
+    })
+    .finally(() => {
+      submitButton.removeAttribute('disabled');
     });
 };
 
 form.addEventListener('submit', onFormSubmit);
 
 hashtagField.addEventListener('input', () => {
+  if (pristine.validate()) {
+    submitButton.removeAttribute('disabled');
+  } else {
+    submitButton.setAttribute('disabled', 'disabled');
+  }
+});
+
+commentField.addEventListener('input', () => {
   if (pristine.validate()) {
     submitButton.removeAttribute('disabled');
   } else {

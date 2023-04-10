@@ -1,13 +1,25 @@
 import { posts } from './data.js';
 import { renderPhotoWindow, COMMENTS_TO_SHOW } from './render-photo-window.js';
 
-
 const bigPicture = document.querySelector('.big-picture');
 const body = document.querySelector('body');
 
+const closePopup = () => {
+  bigPicture.classList.add('hidden');
+  body.classList.remove('modal-open');
+};
+
+const closeByEsc = (evt) => {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    closePopup();
+    document.removeEventListener('keydown', closeByEsc);
+  }
+};
+
 const openPopup = (evt) => {
   const thumbnail = evt.target.closest('.picture');
-  if(!thumbnail){
+  if (!thumbnail) {
     return;
   }
 
@@ -22,35 +34,33 @@ const openPopup = (evt) => {
 
   bigPicture.classList.remove('hidden');
   body.classList.add('modal-open');
-};
+  bigPicture.querySelector('.comments-loader').classList.remove('hidden');
 
-const closePopup = () => {
-  bigPicture.classList.add('hidden');
-  body.classList.remove('modal-open');
+  document.addEventListener('keydown', closeByEsc);
 };
 
 document.querySelector('.pictures').addEventListener('click', openPopup);
 
-document.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
-    closePopup();
-  }
+document.querySelector('.big-picture__cancel').addEventListener('click', () => {
+  document.removeEventListener('keydown', closeByEsc);
+  closePopup();
 });
 
-document.querySelector('.big-picture__cancel').addEventListener('click', closePopup);
-
-document.querySelector('.comments-loader').addEventListener('click', () => {
+document.querySelector('.comments-loader').addEventListener('click', (evt) => {
   const socialComments = document.querySelector('.social__comments');
   const hiddenCommentsEl = socialComments.querySelectorAll('.hidden');
   const hiddenCommentsArr = Array.from(hiddenCommentsEl);
-  let commentToShow = socialComments.children.length - hiddenCommentsEl.length;
+  const commentsCount = socialComments.children.length;
+  let commentToShow = commentsCount - hiddenCommentsEl.length;
   hiddenCommentsArr.forEach((element, index) => {
     if (index + 1 <= COMMENTS_TO_SHOW) {
       element.classList.remove('hidden');
       commentToShow += 1;
     }
   });
-  document.querySelector('.social__comment-count').innerHTML = `${commentToShow} из <span class="comments-count">${socialComments.children.length}<span> комментариев`;
-});
+  if (commentToShow === commentsCount) {
+    evt.target.classList.add('hidden');
+  }
+  document.querySelector('.social__comment-count').innerHTML = `${commentToShow} из <span class="comments-count">${commentsCount}<span> комментариев`;
 
+});

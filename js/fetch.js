@@ -21,6 +21,7 @@ const load = (route, errorText, method = Method.GET, body = null) =>
       if (!response.ok) {
         throw new Error();
       }
+
       return response.json();
     })
     .catch(() => {
