@@ -36,33 +36,28 @@ const toggleFilterButton = (button) => {
   button.classList.add('img-filters__button--active');
 };
 
-document.querySelector('#filter-default').addEventListener('click', (evt) => {
-  const renderDefault = debounce(() => {
-    toggleFilterButton(evt.target);
-    removePictures();
-    renderPhotoList(posts);
+const render = (type) => {
+  switch (type) {
+    case 'filter-default':
+      renderPhotoList(posts);
+      break;
+    case 'filter-discussed':
+      renderPhotoList(sortByComments(posts));
+      break;
+    case 'filter-random':
+      renderPhotoList(sortRandomly(posts));
+      break;
+    default:
+      renderPhotoList(posts);
   }
-  );
-  renderDefault();
+};
+
+const renderDebounce = debounce((buttonEl) => {
+  removePictures();
+  render(buttonEl.id);
+  toggleFilterButton(buttonEl);
 });
 
-document.querySelector('#filter-random').addEventListener('click', (evt) => {
-  const renderRandom = debounce(() => {
-    toggleFilterButton(evt.target);
-    removePictures();
-    renderPhotoList(sortRandomly(posts));
-  }
-  );
-  renderRandom();
+document.querySelector('.img-filters__form').addEventListener('click', (evt) => {
+  renderDebounce(evt.target);
 });
-
-document.querySelector('#filter-discussed').addEventListener('click', (evt) => {
-  const renderDiscussed = debounce(() => {
-    toggleFilterButton(evt.target);
-    removePictures();
-    renderPhotoList(sortByComments(posts));
-  }
-  );
-  renderDiscussed();
-});
-
