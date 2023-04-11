@@ -1,5 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
-
+const TIMEOUT_DELAY = 500;
 export const showAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = 100;
@@ -21,7 +21,7 @@ export const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export function debounce(callback, timeoutDelay = 500) {
+export function debounce(callback, timeoutDelay = TIMEOUT_DELAY) {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);

@@ -1,5 +1,6 @@
 export const COMMENTS_TO_SHOW = 5;
-
+const WIDTH = 35;
+const HEIGHT = 35;
 const createComment = (comment, commentIndex) => {
 
   const commentElement = document.createElement('li');
@@ -13,8 +14,8 @@ const createComment = (comment, commentIndex) => {
   imgElement.classList.add('social__picture');
   imgElement.src = comment.avatar;
   imgElement.alt = comment.name;
-  imgElement.width = 35;
-  imgElement.height = 35;
+  imgElement.width = WIDTH;
+  imgElement.height = HEIGHT;
 
   commentElement.appendChild(imgElement);
 
